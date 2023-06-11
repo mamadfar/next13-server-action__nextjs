@@ -9,6 +9,7 @@ void connectDB();
 export const getAllPosts = async () => {
     try {
         const data = await Post.find();
+        console.log(data)
         const posts = data.map(post => (
             {
                 ...post._doc,
@@ -45,5 +46,17 @@ export const updatePost = async ({title, image, id}: (Pick<IPost, "image" | "tit
         return {...post?._doc, _id: post?._id.toString()};
     } catch (e: any) {
         throw new Error(e?.message || "Failed to update the post!")
+    }
+};
+
+export const deletePost = async (postId?: string ) => {
+    try {
+        const post = await Post.findByIdAndDelete(postId, {new: true});
+
+        revalidatePath("/");
+
+        return {...post?._doc, _id: post?._id.toString()};
+    } catch (e: any) {
+        throw new Error(e?.message || "Failed to delete the post!")
     }
 };
