@@ -6,3 +6,4 @@ export {default as ButtonSubmit} from "./common/ButtonSubmit";
 export {default as PostForm} from "./pages/PostForm";
 export {default as PostList} from "./pages/PostList";
 export {default as PostCard} from "./pages/PostCard";
+export {default as Feature} from "./pages/Feature";

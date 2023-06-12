@@ -6,10 +6,11 @@ import {revalidatePath} from "next/cache";
 
 void connectDB();
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (searchParams?: string) => {
+    const search = searchParams?.search || ""
+
     try {
-        const data = await Post.find();
-        console.log(data)
+        const data = await Post.find({title: {$regex: search}});
         const posts = data.map(post => (
             {
                 ...post._doc,
@@ -20,6 +21,16 @@ export const getAllPosts = async () => {
 
     } catch (e: any) {
         throw new Error(e?.message || "Failed to fetch the posts!")
+    }
+};
+
+export const getOnePost = async (postId: string | undefined) => {
+    try {
+        const post = await Post.findById(postId);
+
+        return {...post?._doc, _id: post?._id.toString()};
+    } catch (e: any) {
+        throw new Error(e?.message || "Failed to fetch the post!")
     }
 
 };
